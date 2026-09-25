@@ -52,9 +52,10 @@ git push -f origin main
 
 githubaction_sg
 
-# Configure the required inbound rules:
+
  ```
-## Security Group Inbound Rules
+####  Configure the required inbound rules:
+######  Security Group Inbound Rules
 
 | Type        | Protocol | Port       | Source          |
 |-------------|----------|------------|-----------------|
@@ -66,87 +67,113 @@ githubaction_sg
 | SSH         | TCP      | 22         | My IP           |
 
 ## 4. Create the GitHub Actions Self-Hosted Runner
-Create an EC2 instance with the following configuration:
+
+**Create an EC2 instance with the following configuration:**
+
 ```bash
 •	Name: Runner 
 •	OS: Ubuntu 
 •	Instance type: c7i-flex.large 
 •	Key pair: github-key 
 •	Security Group: githubaction_sg 
-•	Storage: 25 GB 
-Connect to the instance using Git Bash:
+•	Storage: 25 GB
+```
+**Connect to the instance using Git Bash:**
+```bash
 ssh -i Downloads/github-key.pem ubuntu@<public-ip-of-runner-ec2-instance>
-Update the system:
+
+# Update the system:
+
 sudo apt update
-Set the hostname:
+
+# Set the hostname:
+
 sudo hostnamectl set-hostname runner
 /bin/bash
 
 ```
 ## 5. Configure the GitHub Self-Hosted Runner
-Open your GitHub repository:
 
-Actions → Runners → Self Hosted Runner New self-hosted runner → Linux
+**Open your GitHub repository:**
 
+**Actions → Runners → Self Hosted Runner New self-hosted runner → Linux**
+```bash
 Copy the commands displayed by GitHub and execute them on the Runner EC2 instance.
-
+```
+```bash
 For reference:
 
 copy those commandsopen Runner gitbashpaste those commands and run itAgain go back to git hub repository in browser copy the download the latest runner package commandpaste it in Runner gitbash and run it again open in browser github respository copy the extract the installer commandpaste it in the Runner gitbash and run it
 After downloading and extracting the runner package:
+```
 ```bash
 cd actions-runner
 
-Check the files:
+# Check the files:
+
 ls
+
 If required, remove the downloaded tar file:
 
 rm actions-runner-linux-x64-2.322.0.tar.gz
+
 ls
 ```
 ```bash
+
 For Reference:
+
 Now Configure the Runner: open github repository in browser copy the command related to create Runner & start the Configuration experience paste it in EC2 Runner Gitbash & run it
-Press Enter for Default here type: Press EnterEnterType Runner1 Provide Labels:  here type self-hosted 
+
+Press Enter for Default here type: Press Enter-->Enter-->Type Runner1 -->Provide Labels:  here type self-hosted 
 Enter the name of work folder: Press enter key here for default
 ```
+
+**Configure the runner using the command provided by GitHub.**
 ```bash
-Configure the runner using the command provided by GitHub.
 When prompted:
 •	Press Enter for the default values where appropriate. 
 •	Enter Runner1 as the runner name. 
 •	Enter self-hosted as the label. 
-•	Press Enter to use the default work folder. 
+•	Press Enter to use the default work folder.
+
 ls
+
 ```
 
 for reference: Open github repository in browseropen same repository in duplicate browserselect settings -->actionsrunnersNow you can see Runner1 is in offline 
 open EC2 runner gitbash  run the below command
+
 ```bash
 
-Start the runner:
+# Start the runner:
 
 ./run.sh
 ```
-You should see a message similar to:
+**You should see a message similar to:**
 ```bash
 Connected to GitHub
 Listening for Jobs
 The runner is now connected to GitHub and ready to execute GitHub Actions jobs.
 ```
-For referece: Open guthub repository in browser Refresh the pageYou can observe status changed to idle or active 
+For referece: Open github repository in browser Refresh the page -->You can observe status changed to **idle or active**
+
 ## 6. Install Maven on the Runner
+
 Check the cicd.yaml file in:
 
-.github/workflows/cicd.yaml
+**.github/workflows/cicd.yaml**
+
 ```bash
 Since the workflow uses Maven, Maven must be installed on the Runner EC2 instance.
-Open one more gitbash for installation purpose
 ```
+**Open one more gitbash for installation purpose.**
+
 
 Connect to the Runner:
 ```bash
 ssh -i Downloads/github-key.pem ubuntu@<public-ip-of-runner-ec2-instance>
+
 sudo hostnamectl set-hostname runnerinstalationpurpose
 
 /bin/bash
@@ -155,12 +182,14 @@ Install Maven:
 
 sudo apt install maven -y
 ```
-Go to GitHub → Actions and run the workflow again.(click on re-run jobs)
+**Go to GitHub → Actions and run the workflow again.(click on re-run jobs)**
 
-At this stage, the pipeline should proceed successfully through the compe job phase.
+At this stage,**the pipeline should proceed successfully through the compile job phase.**
 
 ## 7. Create the SonarQube EC2 Instance
+
 Create another EC2 instance for SonarQube.
+
 ```bash
 Configuration:
 •	Name: SonarQube 
@@ -171,30 +200,36 @@ Configuration:
 •	Storage: 25 GB
 ```
 
-Connect to the SonarQube instance:
+**Connect to the SonarQube instance:**
 ```bash
 ssh -i Downloads/github-key.pem ubuntu@<public-ip-of-sonarqube-ec2-instance>
-Set the hostname:
+
+# Set the hostname:
+
 sudo hostnamectl set-hostname sonarqube
+
 /bin/bash
-Update the system:
+
+# Update the system:
+
 sudo apt update
 
-Install Docker: type
+# Install Docker: type
 
 docker  #Install docker through sonarqube
 
 sudo apt install docker.io -y
+
 ```
 **Add the current user to the Docker group:**
 ```bash
 sudo usermod -aG docker $USER
 
-Apply the group changes:
+# Apply the group changes:
 
 newgrp docker
 
-Run SonarQube:
+# Run SonarQube:
 
 docker run -d --name sonar -p 9000:9000 sonarqube:lts-community
 ```
@@ -220,14 +255,16 @@ Click Update Password.
 **You will then be redirected to the SonarQube dashboard.**
 
 ## 9. Generate the SonarQube Token
-In SonarQube:
+**In SonarQube:**
 ```bash
 Administration(top navigation bar) → Security → Users
  
 Under the token section click on this symbol  .It will open this page 
  
 Using the above one generate a new token.
+
 Provide a name for the token (Name : A) and click Generate.
+
 Copy the generated token and store it securely. 
 
 ```
@@ -240,14 +277,19 @@ Create a repository secret:
 
 Name: SONAR_TOKEN (The name must be match the name used in cicd.yaml file under build_project_and_sonar_scan: job)
 
-Value: paste the <SonarQube-token> here  
+Value: paste the <SonarQube-token> here
+
 The name must match the name used in cicd.yaml.
 
+
 Create a repository variable:
+
 Now select variable tab --> new Repository Variable-->
 
 Name: SONAR_HOST_URL
+
 Value: http://<sonarqube-ec2-public-ip>:9000
+
 
 The variable name must also match the name used in cicd.yaml
 ```
@@ -264,9 +306,13 @@ copy the Set up Docker's apt repository commands from browser , **paste and run 
 # Add Docker's official GPG key:
 ```bash
 sudo apt update
+
 sudo apt install ca-certificates curl
+
 sudo install -m 0755 -d /etc/apt/keyrings
+
 sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+
 sudo chmod a+r /etc/apt/keyrings/docker.asc
 ```
 # Add the repository to Apt sources:
@@ -281,16 +327,17 @@ Signed-By: /etc/apt/keyrings/docker.asc
 EOF
 
 sudo apt update
+
 ```
 **copy Install the Docker packages commands from the official docker website --> run those commands in runnerinstalationpurpose gitbash terminal**
 ```bash
 sudo apt install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-After installing Docker, add the Ubuntu user to the Docker group:
+# After installing Docker, add the Ubuntu user to the Docker group:
 
 sudo usermod -aG docker ubuntu
 
-Apply the changes:
+# Apply the changes:
 
 newgrp docker
 ```
@@ -299,37 +346,47 @@ newgrp docker
 Reconnect to the Runner and start the GitHub Actions runner again:
 ```bash
 ssh -i Downloads/github-key.pem ubuntu@<public-ip of runner ec2-instance>
+
 sudo hostnamectl set-hostname runner
 
 /bin/bash
+
 ls
+
 cd actions-runner
 
 ./run.sh
+
 ```
 Your original notes use the official Docker Ubuntu website for installation process.
+
 ## 12. Configure Docker Hub
 **Open the cicd.yaml file and update the Docker image name with your Docker Hub username and application name.**
 ```bash
-Example:
+# Example:
+
 tags: harathi2026/bankapp:latest
 ```
 **Create a Dcoker username and password in our github repository as secrets and variable:**
 
-Open again our project github repository page in browsersettingsunder Security and quality-->select Secrets and variables-->select Actions-->select secrets Tab-->new repository secret button
+Open again our project github repository page in browser-->settings-->under Security and quality-->select Secrets and variables-->select Actions-->select secrets Tab-->new repository secret button
 ```bash
 Name: DOCKERHUB_TOKEN (name must be match in cicd.yaml file under build_docker_image_and_push: job)
+
 Secret: Enter Your Docker password Click on Add secret button
 
-
-select variables Tab-->new repository variable button
 ```
+**select variables Tab-->new repository variable button**
 ```bash
+select variables Tab-->new repository variable button
+
 Name: DOCKERHUB_USERNAME (name must be match in cicd.yaml file under build_docker_image_and_push: job)
+
 Value: Enter Your Docker username -->Click on Add Variable button
 ```
 **Create the following GitHub repository secret:**
 ```bash
+
 DOCKERHUB_TOKEN
 
 Store your Docker Hub password/token as the secret value.
@@ -341,32 +398,37 @@ DOCKERHUB_USERNAME
 Store your Docker Hub username as the value.
 ```
 **Commit the changes and run the GitHub Actions workflow again.**
+```bash
 
 For reference:
 
 Open cicd.yaml file -->commit the changes--> or click on Actions -->  rerun the job 
+```
 
 ## 13. Create the EC2 Server for EKS
 
 **Create another EC2 instance to create the EKS cluster.**
 ```bash
 Configuration:
+
 •	Name: Server 
 •	OS: Ubuntu 
 •	Instance type: c7i-flex.large 
 •	Key pair: github-key 
 •	Security Group: githubaction_sg 
 •	Storage: 25 GB
+
 ```
 **Connect to the server: open one more gitbash terminal**
 ```bash
+
 ssh -i Downloads/github-key.pem ubuntu@<public-ip-of-server-ec2-instance>
 
-Update the system:
+# Update the system:
 
 sudo apt update
 
-Set the hostname:
+# Set the hostname:
 
 sudo hostnamectl set-hostname server
 
@@ -380,28 +442,29 @@ sudo apt update
 
 sudo apt install unzip -y
 
-Download AWS CLI:
+# Download AWS CLI:
 
 curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
 
-Extract it:
+# Extract it:
 
 unzip awscliv2.zip
 
-Install AWS CLI:
+# Install AWS CLI:
 
 sudo ./aws/install
  ```
 **For reference:**
 **open aws console in browsergenerate Access key and secret key for IAM user or for Root user**
 
-click on Root user (rightside top corner)-->security credentials-->select create a access key-->select the check box I understand-->select create access key button--> copy or download the secret and access keys
+click on Root user (rightside top corner)-->security credentials-->select create a access key-->select the check box I understand-->select create access key button--> **copy or download the secret and access keys**
+
 ```bash
-Configure AWS:
+# Configure AWS:
 
 aws configure
 
-Provide:
+# Provide:
 
 AWS Access Key ID: paste <your-access-key> here
 
@@ -417,23 +480,23 @@ Default output format: json
 ```bash
 sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
 
-Add the HashiCorp GPG key:
+# Add the HashiCorp GPG key:
 
 wget -O- https://apt.releases.hashicorp.com/gpg | \
 gpg --dearmor | \
 sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
 
-Add the HashiCorp repository:
+# Add the HashiCorp repository:
 
 echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
 https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
 sudo tee /etc/apt/sources.list.d/hashicorp.list
 
-Install Terraform:
+# Install Terraform:
 
 sudo apt-get update && sudo apt-get install terraform
 
-Verify the installation:
+# Verify the installation:
 
 terraform --version
 ```
@@ -462,23 +525,28 @@ terraform –version
 **The EKS Terraform code is also stored in the GitHub Actions project repository.**
 
 Before cloning the project, open variables.tf and update the SSH key name:
-```bash 
+```bash
+
 variable "ssh_key_name" {
   description = "The name of the SSH key pair to use for instances"
   type        = string
   default     = "github-key"
 }
+
 ``` 
 **Replace github-key with the key pair name you are using in ec2 instances(runner,sonarqube,server instances).**
 
 Also check main.tf and update the AWS region if required:
+
 ```bash 
 provider "aws" {
   region = "eu-north-1"
 }
 ``` 
 Clone the repository in **server instance gitbash terminal**:
-```bash 
+
+```bash
+
 git clone https://github.com/harathi-mutyam/Github-Actions-Project.git
 
 # Move into the project directory:
