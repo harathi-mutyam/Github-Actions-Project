@@ -103,7 +103,8 @@ Copy the commands displayed by GitHub and execute them on the Runner EC2 instanc
 ```bash
 For reference:
 
-copy those commandsopen Runner gitbashpaste those commands and run itAgain go back to git hub repository in browser copy the download the latest runner package commandpaste it in Runner gitbash and run it again open in browser github respository copy the extract the installer commandpaste it in the Runner gitbash and run it
+copy those commandsopen Runner gitbash-->paste those commands and run itAgain go back to git hub repository in browser copy the download the latest runner package command--> paste it in Runner gitbash and run it -->again open in browser github respository copy the extract the installer command--> paste it in the Runner gitbash and run it
+
 After downloading and extracting the runner package:
 ```
 ```bash
@@ -140,21 +141,26 @@ When prompted:
 ls
 
 ```
+```bash
+for reference: Open github repository in browseropen same repository in duplicate browser--> select settings -->actionsrunners--> Now you can see Runner1 is in offline 
 
-for reference: Open github repository in browseropen same repository in duplicate browserselect settings -->actionsrunnersNow you can see Runner1 is in offline 
-open EC2 runner gitbash  run the below command
-
+```
+**open EC2 runner gitbash  --> run the below command**
 ```bash
 
 # Start the runner:
 
 ./run.sh
+
 ```
 **You should see a message similar to:**
 ```bash
 Connected to GitHub
+
 Listening for Jobs
+
 The runner is now connected to GitHub and ready to execute GitHub Actions jobs.
+
 ```
 For referece: Open github repository in browser Refresh the page -->You can observe status changed to **idle or active**
 
@@ -171,6 +177,8 @@ Since the workflow uses Maven, Maven must be installed on the Runner EC2 instanc
 
 
 Connect to the Runner:
+
+
 ```bash
 ssh -i Downloads/github-key.pem ubuntu@<public-ip-of-runner-ec2-instance>
 
