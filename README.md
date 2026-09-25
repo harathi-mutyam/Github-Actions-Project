@@ -717,6 +717,8 @@ terraform destroy --auto-approve
 ```
 Then:
 **•	Terminate the remaining EC2 instances(runner instance, sonarqube instance, server instance) from the AWS Console.**
+
+
 **•	Disable and delete the AWS access key after it is no longer required.** 
 ```bash
 Project Flow
