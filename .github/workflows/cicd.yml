@@ -103,7 +103,7 @@ jobs:
       with:
         context: .
         push: true
-        tags: push356/bankapp:latest
+        tags: harathi2026/bankapp:latest
         file: ./Dockerfile
         
   deploy_to_kubernetes:
