@@ -7,42 +7,64 @@ Open VS Code → Terminal → Git Bash and clone the repository:
 git clone https://github.com/harathi-mutyam/Github-Actions-Project.git
 ```
 ## 2. Push Local Code to GitHub (optional here)
-Open Git Bash in the project directory.
+**Open Git Bash in the project directory.**
 ```bash
-Remove the existing Git configuration:
+# Remove the existing Git configuration:
 
 rm -rf .git
-Initialize Git:
+# Initialize Git:
+
 git init
-Rename the branch to main:
+
+# Rename the branch to main:
+
 git branch -M main
-Add the .gitignore file:
+
+# Add the .gitignore file:
+
 git add .gitignore
-Commit the changes:
+
+# Commit the changes:
+
 git commit -m "Add gitignore to project"
-Add all project files:
+
+# Add all project files:
+
 git add .
-Commit the project:
+
+# Commit the project:
+
 git commit -m "project"
-Add the GitHub remote repository:
+
+# Add the GitHub remote repository:
+
 git remote add origin https://github.com/harathi-mutyam/Github-Actions-Project.git
-Push the code:
+
+# Push the code:
+
 git push -f origin main
 ```
 ## 3. Create the AWS Security Group
-Open the AWS Console → EC2 → Security Groups.
+
+**Open the AWS Console → EC2 → Security Groups.**
 ```bash
-Create a security group named:
+#Create a security group named:
+
 githubaction_sg
-Configure the required inbound rules:
-Type	Protocol	Port	Source
-SMTPS	TCP	465	Anywhere IPv4
-Custom TCP	TCP	587	Anywhere IPv4
-Custom TCP	TCP	3000–11000	Anywhere IPv4
-HTTP	TCP	80	Anywhere IPv4
-HTTPS	TCP	443	Anywhere IPv4
-SSH	TCP	22	My IP
+
+# Configure the required inbound rules:
  ```
+## Security Group Inbound Rules
+
+| Type        | Protocol | Port       | Source          |
+|-------------|----------|------------|-----------------|
+| SMTPS       | TCP      | 465        | Anywhere IPv4   |
+| Custom TCP  | TCP      | 587        | Anywhere IPv4   |
+| Custom TCP  | TCP      | 3000–11000 | Anywhere IPv4   |
+| HTTP        | TCP      | 80         | Anywhere IPv4   |
+| HTTPS       | TCP      | 443        | Anywhere IPv4   |
+| SSH         | TCP      | 22         | My IP           |
+
 ## 4. Create the GitHub Actions Self-Hosted Runner
 Create an EC2 instance with the following configuration:
 ```bash
