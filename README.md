@@ -747,7 +747,10 @@ Kubernetes Application
 Browser
 ```
 ```bash
-Note: Our cicd.yaml file already contains the required configuration. In a real-time project, if you need any additional actions, you can search for them in the GitHub Actions Marketplace, such as SonarQube Quality Gate Check or any other action required for your project, and add the appropriate action to the cicd.yaml file.
-After making the changes, commit the updated cicd.yaml file and run the GitHub Actions pipeline again. At this stage, observe the pipeline execution. If the pipeline fails, check the error message. In our case, the Docker stage failed, so we need to troubleshoot the Docker-related issue.
+Note: Our cicd.yaml file already contains the required configuration.
+In a real-time project, if you need any additional actions, you can search for them in the GitHub Actions Marketplace, such as SonarQube Quality Gate Check or any other action required for your project, and add the appropriate action to the cicd.yaml file.
+
+After making the changes, commit the updated cicd.yaml file and run the GitHub Actions pipeline again. At this stage, observe the pipeline execution.
+If the pipeline fails, check the error message. In our case, the Docker stage failed, so we need to troubleshoot the Docker-related issue.
 ```
 
